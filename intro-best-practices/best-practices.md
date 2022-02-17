@@ -142,6 +142,8 @@ See [Git manual: gitignore](https://git-scm.com/docs/gitignore) for more informa
 
 # 4. Move to the cluster
 
+For a "How-to guide" on how to configure your ssh and connect to Caltech's cluster, see these [ssh notes](ssh.md).
+
 ## 4.1. Create a new repository on github
 
 - Go to github.com, and click + in the top right hand corner
