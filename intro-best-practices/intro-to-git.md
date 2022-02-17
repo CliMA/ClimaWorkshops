@@ -1,6 +1,7 @@
 
 
-## Introduction to version control with `git`
+
+# Introduction to version control with `git`
 
 Version control Software (VCS) is also referred as SCM (Source Code Management) or RCS (Revision Control System) tools. Version control, also known as source control, is the practice of tracking and managing changes to source files. Version control systems are software tools that help teams of contributors manage changes to source code over time. There are several options: `git`, `CVS`, `SVN`, etc.
 
@@ -18,7 +19,7 @@ If you are unfamiliar with `git` and version control, the following guides can b
 
 We provide a brief guide here.
 
-### Identity
+## Identity
 
 First make sure `git` knows your name and email address:
 
@@ -27,7 +28,7 @@ $ git config --global user.name "A. Climate Developer"
 $ git config --global user.email "a.climate.developer@eg.com"
 ```
 
-### Forks and branches
+## Forks and branches
 
 Create your own fork of the desired repository and check out your copy. For example:
 
@@ -49,11 +50,11 @@ Create a branch for your feature; this will hold your contribution:
 $ git checkout -b <branchname>
 ```
 
-#### Some useful tips
+### Some useful tips
 - When you start working on a new feature branch, make sure you start from master by running: `git checkout main`.
 - When you create a new branch and check it out, as in `git checkout -b <branchname>`, a common convention is to make `branchname` something along the lines of `<yourname>/<affected-module>-<short-description>`.
 
-### Develop your feature
+## Develop your feature
 
 Follow the recommended [Coding conventions](https://clima.github.io/ClimateMachine.jl/latest/DevDocs/CodeStyle/#Coding-conventions), especially remember that readability and accessibility are very important aspects to make a codebase inclusive. For instance,  `snake_case` or `CamelCase` are more accessible than `nocase` for people who have vision problems.
 
@@ -61,7 +62,8 @@ If you recognize the need for a feature that you and others may use in your work
 
 Then, when adding your contribution, please make sure you add appropriate unit tests for your code in `test/` and appropriate documentation in the code and/or in `docs/`.
 
-#### Some useful tips
+### Some useful tips
+
 - Once you have written some code, inspect changes by running `git status`.
 - Commit all files changed: `git commit -a` or
 - Commit selected files: `git commit <file1> <file2>` or
@@ -71,9 +73,9 @@ Then, when adding your contribution, please make sure you add appropriate unit t
 - Push feature branch to the remote for review: `git push origin <branchname>`
 - Use descriptive, useful commit messages, and don't swear if you don't want your commit message to be shared publicly by the [@gitlost Twitter bot](https://twitter.com/gitlost?lang=en)!
 
-### Squash and rebase
+## Squash and rebase
 
-Use `git rebase` (not `git merge` so you don't bring all commits history in) to sync your work:
+Only _after_ a reviewer is done with their review and your PR is approved, it is good to squash your commits history before merging the PR. Use `git rebase` (not `git merge` so you don't bring all commits history in) to sync your work:
 
 ```
 $ git fetch upstream
@@ -82,7 +84,8 @@ $ git rebase upstream/main
 
 You might find it easier to [squash your commits](https://github.com/edx/edx-platform/wiki/How-to-Rebase-a-Pull-Request#squash-your-changes) first.
 
-#### Some useful tips
+### Some useful tips
+
 When cleaning up your local branches, some of the following commands might be useful:
 - Show local and remote-tracking branches: `git branch -a`.
 - Show available remotes: `git remote -v`.
@@ -107,3 +110,10 @@ Additionally, when debugging or inspecting the code for some potentially problem
   (If the file was aready staged via `git add <file>`, then use `git restore <file>`
   first, and then `git checkout <file>` to discard local changes).
 - Discard all changes to the current working tree: `git checkout -f`.
+
+## Code reviews
+
+Code reviews are possibly the most under-rated service in open-source/community projects. The best way to get familiar with a code base is reviewing other contributors' code. Unless the PR is only touching on some documentation (for which you can inspect the preview on GitHub—see the `documenter/deploy` action in the image below), you want to checkout the branch associated with the PR and test/run the code. If output is expected, inspect it. If some things are not clear, perhaps more documentation is needed, hence, you can ask contributors to improve it.
+
+![](GHAction-Documentation.png "Documentation preview")
+
