@@ -1,5 +1,6 @@
 
 
+
 # Introduction to version control with `git`
 
 Version control Software (VCS) is also referred as SCM (Source Code Management) or RCS (Revision Control System) tools. Version control, also known as source control, is the practice of tracking and managing changes to source files. Version control systems are software tools that help teams of contributors manage changes to source code over time. There are several options: `git`, `CVS`, `SVN`, etc.
@@ -62,6 +63,7 @@ If you recognize the need for a feature that you and others may use in your work
 Then, when adding your contribution, please make sure you add appropriate unit tests for your code in `test/` and appropriate documentation in the code and/or in `docs/`.
 
 ### Some useful tips
+
 - Once you have written some code, inspect changes by running `git status`.
 - Commit all files changed: `git commit -a` or
 - Commit selected files: `git commit <file1> <file2>` or
@@ -83,6 +85,7 @@ $ git rebase upstream/main
 You might find it easier to [squash your commits](https://github.com/edx/edx-platform/wiki/How-to-Rebase-a-Pull-Request#squash-your-changes) first.
 
 ### Some useful tips
+
 When cleaning up your local branches, some of the following commands might be useful:
 - Show local and remote-tracking branches: `git branch -a`.
 - Show available remotes: `git remote -v`.
@@ -113,3 +116,4 @@ Additionally, when debugging or inspecting the code for some potentially problem
 Code reviews are possibly the most under-rated service in open-source/community projects. The best way to get familiar with a code base is reviewing other contributors' code. Unless the PR is only touching on some documentation (for which you can inspect the preview on GitHub—see the `documenter/deploy` action in the image below), you want to checkout the branch associated with the PR and test/run the code. If output is expected, inspect it. If some things are not clear, perhaps more documentation is needed, hence, you can ask contributors to improve it.
 
 ![](GHAction-Documentation.png "Documentation preview")
+

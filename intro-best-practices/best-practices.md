@@ -198,6 +198,7 @@ sbatch run.sh
 ```
 
 > #### Highlight
+
 > Our very own Simon Byrne and Haako Ludvig came up with a nice [VSCode integration](https://gist.github.com/haakon-e/e444972b99a5cd885ef6b29c86cb388e) for which the VSCode backend (and all plugins you might have installed) run directly on a dedicated compute node on Caltech's cluster so that people are refrained from using the login node for heavy project compilations or runs. This setup was also endorsed by Caltech, om their [HPC facility documentation](https://www.hpc.caltech.edu/documentation/software-and-modules/vscode).
 
 Now we are ready to submit a job to the scheduler.
@@ -238,6 +239,7 @@ scancel jobid
 ```
 
 You can see any output at `slurm-jobid.out`.
+
 
 Some useful tips:
 - If you want to be pedantic, you can add `git diff --exit-code HEAD`. This will return an error if there are any uncommitted changes to your repository.
