@@ -157,8 +157,9 @@ lines!(ax_U, Un, ys)
 
 xlims!(ax_U, -0.15, 0.15)
 
-# Colorbar(fig[2, 0], hm_s, label="Speed", flipaxis=false)
-# Colorbar(fig[1, 0], hm_ζ, label="Vorticity", flipaxis=false)
+## TODO: make this pretty
+## Colorbar(fig[2, 0], hm_s, label="Speed", flipaxis=false)
+## Colorbar(fig[1, 0], hm_ζ, label="Vorticity", flipaxis=false)
 
 title = @lift "Barotropic turbulence at t = " * string(ζ_ts.times[$n])
 lbl = Label(fig[0, :], title)
