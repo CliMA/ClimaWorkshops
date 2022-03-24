@@ -33,7 +33,7 @@ Here we are going to give an introduction on some basic support for [Makie.jl](h
 
 - To output ODE solve compatible fields (i.e., collect `sol` fields in a Field array), we will use examples from the suite of examples available in ClimaCore.jl.
 
-    * The function we use to print `.vtu` and `.pvd` output files is `writepvd`. The `.vtu` file format is an XML-based file format, which is used nowadays in favor of the deprecated `.vtk` file format.
+    * The function we use to print `.vtu` and `.pvd` output files is `writepvd`. The `.vtu` file format is an XML-based file format, which is used for unstructured meshes.
 
 > #### Exercise 4.1
 > Run the [shallow_water.jl](shallow_water.jl) example with the `barotropic_instability` test case argument (either as a command line argument or from the Julia REPL).
