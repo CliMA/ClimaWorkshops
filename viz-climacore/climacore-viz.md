@@ -19,6 +19,7 @@ Start Julia and open the [climacore-plots notebook](climacore-plots.ipynb) noteb
 
 > #### Exercise 2.1
 > julia> using IJulia
+
 > julia> notebook()
 
 ## 3. `ClimaCoreMakie`
