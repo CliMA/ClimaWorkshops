@@ -76,19 +76,25 @@ simulation.callbacks[:progress] = Callback(progress, IterationInterval(10))
 
 simulation.stop_iteration += 2000
 run!(simulation)
+=#
 
 fig = Figure(resolution=(800, 600))
 ax = Axis3(fig[1, 1], xlabel="x (m)", ylabel="y (m)", zlabel="z (m)")
 
 et = FieldTimeSeries("convection.jld2", "e")
-ecubeⁿ = @lift datacube(et[$n])
+
+eⁿ = (east   = @lift(datacube(et[$n]).east),
+      west   = @lift(datacube(et[$n]).west),
+      south  = @lift(datacube(et[$n]).south),
+      north  = @lift(datacube(et[$n]).north),
+      top    = @lift(datacube(et[$n]).top),
+      bottom = @lift(datacube(et[$n]).bottom))
 
 for side in (:east, :west, :south, :north, :bottom, :top)
     x = getproperty(xcube, side)
     y = getproperty(ycube, side)
     z = getproperty(zcube, side)
-    pl = surface!(ax, x, y, z, color=getproperty(ecubeⁿ, side))
+    pl = surface!(ax, x, y, z, color=getproperty(eⁿ, side))
 end
 
 display(fig)
-=#

@@ -12,38 +12,61 @@
 # 5. Use `Slider` to explore data in a static plot in post
 # 6. Use `Observable` to animate data in post with a fancy `colorrange`
 #
-# Make sure the following packages are installed:
+# If you're using a notebook or you forgot to write `julia --project`,
+# these lines will help...
+
+using Pkg
+Pkg.activate(".")
+Pkg.instantiate()
+
+# Now we import all the packages we're planning to use: Makie with the OpenGL backend,
+# Oceananigans, the function `mean`, and `Printf` for pretty printing.
 
 using GLMakie
 using Oceananigans
 using Oceananigans.Simulations: reset!
-using Statistics
+using Statistics: mean
 using Printf
 
-# # Setup: freely-decaying barotropic turbulence on the beta plane
+# # The setup: freely-decaying barotropic turbulence on the beta plane
+#
+# All of the following examples use the setup below, which simulates
+# barotropic turbulence on the beta-plane in a meridionally-bounded domain.
 
-## Simulation
+## Set up a simulation with random velocity initial conditions
 grid = RectilinearGrid(size=(128, 128), extent=(2π, 2π), halo=(3, 3), topology=(Periodic, Bounded, Flat))
 model = NonhydrostaticModel(; grid, advection=WENO5(), coriolis=BetaPlane(f₀=1, β=20))
 ϵ(x, y, z) = 2rand() - 1
 set!(model, u=ϵ, v=ϵ)
 simulation = Simulation(model, Δt=0.02, stop_iteration=2000)
 
-## Diagnostic: vorticity
+# ## Diagnostics: vorticity, speed, mean momentum, and enstrophy
+#
+# We build some diagnostics so we have data to plot:
+
+## Vorticity
 u, v, w = model.velocities
 ζ = compute!(Field(∂x(v) - ∂y(u)))
 xζ, yζ, zζ = nodes(ζ)
 
-## Diagonstic: speed
+## Speed
 s_op = @at (Center, Center, Center) sqrt(u^2 + v^2)
 s = compute!(Field(s_op))
 xs, ys, zs = nodes(s)
 
-## Diagonstic: zonal-averages
+## Zonal-averaged enstrophy and momentum
 Z = Field(Average(ζ^2, dims=1))
 U = Field(Average(u, dims=1))
 compute!(Z)
 compute!(U)
+
+# Tiny note about Oceananigans syntax: you'll find the function `interior`
+# used extensively in the code below. This function returns a `view` into
+# the data underlying a `Field`. For example,
+
+typeof(interior(ζ, :, :, 1))
+
+# returns a two-dimensional (x, y) view into the vorticity.
 
 # # Demo
 #
@@ -172,4 +195,3 @@ record(fig, "barotropic_turbulence_offline.mp4", 1:100, framerate=24) do nn
     Zmax = maximum(Z_ts[nn])
     xlims!(ax_Z, -Zmax/10, 2Zmax)
 end
-
