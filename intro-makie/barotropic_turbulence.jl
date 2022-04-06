@@ -60,21 +60,36 @@ U = Field(Average(u, dims=1))
 compute!(Z)
 compute!(U)
 
-# Tiny note about Oceananigans syntax: you'll find the function `interior`
-# used extensively in the code below. This function returns a `view` into
-# the data underlying a `Field`. For example,
+# Tiny note about Oceananigans syntax: the objects `ζ`, `s`, `Z`, and `U` are
+# Oceananigans `Field`s. We extract data from these objects with the function
+# `interior`, which you'll find peppered throughout the code below.
+# `interior` `view` into the data underlying a `Field`. For example,
 
 typeof(interior(ζ, :, :, 1))
 
-# returns a two-dimensional (x, y) view into the vorticity.
+# returns a two-dimensional ``(x, y)`` view into the vorticity at index "1"
+# in the vertical (the only index in this problem).
 
 # # Demo
 #
 # ## Create a simple figure with one axis
+#
+# Here we plot the initial condition in a `Figure` with one `Axis`:
+
+## Create the figure:
 fig = Figure(resolution=(800, 600))
+
+## Create the axis, specifying axis labels, title, and aspect ratio
 ax = Axis(fig[1, 1], xlabel="x", ylabel="y", title="Vorticity", aspect=1)
-hm = contourf!(ax, xζ, yζ, interior(ζ, :, :, 1), levels=5)
+
+## Create a filled contour plot of vorticity with 5 levels
+contourf!(ax, xζ, yζ, interior(ζ, :, :, 1), levels=5)
+
+## Save the plot
 save("barotropic_turbulence_vorticity.png", fig)
+## ![]("barotropic_turbulence_vorticity.png")
+# <img src="barotropic_turbulence_vorticity.png" alt="Barotropic turbulence vorticity" width="400"/>
+
 display(fig)
 
 # ## Create a figure with layout
@@ -87,8 +102,8 @@ ax_U = Axis(fig[2, 2], xlabel="Zonally-averaged zontal momentum", ylabel="y")
 
 lbl = Label(fig[0, :], "Barotropic turbulence at t = 0")
 
-cr_ζ = heatmap!(ax_ζ, xζ, yζ, interior(ζ, :, :, 1), colormap=:redblue)
-cr_s = heatmap!(ax_s, xs, ys, interior(s, :, :, 1))
+hm_ζ = heatmap!(ax_ζ, xζ, yζ, interior(ζ, :, :, 1), colormap=:redblue)
+hm_s = heatmap!(ax_s, xs, ys, interior(s, :, :, 1))
 ln_Z = lines!(ax_Z, interior(Z, 1, :, 1), yζ)
 ln_U = lines!(ax_U, interior(U, 1, :, 1), ys)
 
@@ -100,9 +115,15 @@ display(fig)
 
 # ## Update a plot live while a simulation runs
 function update!(sim)
+    ## Update the label text to the current time
     lbl.text[] = @sprintf("Barotropic turbulence at t = %.2f", time(sim))
-    cr_ζ.input_args[3][] = interior(compute!(ζ), :, :, 1)
-    cr_s.input_args[3][] = interior(compute!(s), :, :, 1)
+
+    ## Update the vorticity and speed heatmaps. Note that the vorticity and speed
+    ## are the "third" argument to `heatmap!` above
+    hm_ζ.input_args[3][] = interior(compute!(ζ), :, :, 1)
+    hm_s.input_args[3][] = interior(compute!(s), :, :, 1)
+
+    ## Update the enstrophy and momentum
     compute!(Z); compute!(U)
     ln_Z.input_args[1][] = interior(Z, 1, :, 1)
     ln_U.input_args[1][] = interior(U, 1, :, 1)
