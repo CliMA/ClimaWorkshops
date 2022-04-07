@@ -6,7 +6,6 @@
 # If you're using a notebook or you forgot to write `julia --project`,
 # these lines will help...
 
-#=
 using Pkg
 Pkg.activate(".")
 Pkg.instantiate()
@@ -43,7 +42,6 @@ progress(sim) = @info string("Iter: ", iteration(sim), ", time: ", prettytime(si
 simulation.callbacks[:progress] = Callback(progress, IterationInterval(10))
 
 run!(simulation)
-=#
 
 # Note that it's usually advisible to save just the 2D _slices_ that are going
 # to be plotted later for 3D animations. The above saves 3D data for simplicity.
