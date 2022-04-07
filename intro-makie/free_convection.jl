@@ -108,7 +108,6 @@ title = @lift "Free convection at t = " * prettytime(et.times[$n])
 ax = Axis3(fig[1, 1], xlabel="x (m)", ylabel="y (m)", zlabel="z (m)"; title)
 
 # Now we're ready to create `Observable` with the handy `slicer.value`,
-#Label(fig[1, 1], title, tellheight=true)
 
 Nx, Ny, Nz = size(grid)
 eⁿ_east   = @lift interior(et[$n],  1,  :,  :)
