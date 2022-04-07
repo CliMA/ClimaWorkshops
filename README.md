@@ -7,4 +7,8 @@ Topics include:
 
 2. Introduction to [ClimaCore.jl](https://github.com/CliMA/ClimaCore.jl)'s API objects (`Domain`, `Mesh`, `Topology`, `Space`, `Field`), points, vectors, their conversions, and use in `Operator`s. The material for this workshop can be found in [`intro-climacore`](intro-climacore/climacore-api.ipynb).
 
-3. Introduction to some basic visualizations supported in [ClimaCore.jl](https://github.com/CliMA/ClimaCore.jl). This workshop builds up on some material from the [previous workshop](intro-climacore/climacore-api.ipynb) and show how we can achieve some basic visualizations in ClimaCore.jl. This is not intended to show production-type visualizations, but mainly to show how to visualize ClimaCore.jl `Field`s using packages such as [ClimaCorePlots](https://github.com/CliMA/ClimaCore.jl/tree/main/lib/ClimaCorePlots), [ClimaCoreVTK](https://github.com/CliMA/ClimaCore.jl/tree/main/lib/ClimaCoreVTK) and [ClimaCoreMakie](https://github.com/CliMA/ClimaCore.jl/tree/main/lib/ClimaCoreMakie).
+3. Introduction to some basic visualizations supported in [ClimaCore.jl](https://github.com/CliMA/ClimaCore.jl).
+   This workshop builds on material from [intro to `ClimaCore.jl`](intro-climacore/climacore-api.ipynb) illustrate basic visualizations in ClimaCore.jl.
+   This is not intended to show production-type visualizations, but mainly to show how to visualize ClimaCore.jl `Field`s using packages such as [ClimaCorePlots](https://github.com/CliMA/ClimaCore.jl/tree/main/lib/ClimaCorePlots), [ClimaCoreVTK](https://github.com/CliMA/ClimaCore.jl/tree/main/lib/ClimaCoreVTK) and [ClimaCoreMakie](https://github.com/CliMA/ClimaCore.jl/tree/main/lib/ClimaCoreMakie).
+
+4. Introduction to static and animated visualization with [`Makie.jl`](https://github.com/JuliaPlots/Makie.jl).
