@@ -14,13 +14,8 @@ This tutorial consists of three scripts / notebooks:
 * `barotropic_turbulence.jl` / `barotropic_turbulence.ipynb` (Animating two-dimensional data on the fly and in post-processing)
 * `free_convection.jl` / `free_convection.ipynb` (Animating three-dimensional data with `Axis3` and `surface`)
 
-The tutorials can be run as scripts by writing
-
-```bash
-$ julia --project
-```
-
-and then
+The tutorials can be run as scripts by navigating to `/intro-makie/`,
+writing `julia --project` in a terminal, and then
 
 ```julia
 julia> include("super_basic_intro.jl")
