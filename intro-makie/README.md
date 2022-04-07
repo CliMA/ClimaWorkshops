@@ -10,12 +10,9 @@ This is an introduction to
 
 This tutorial consists of three scripts / notebooks:
 
-* `super_basic_intro.jl` / `super_basic_intro.ipynb`
-    - `Figure`, `Axis`, `heatmap`, and `Slider` for interactivity
-* `barotropic_turbulence.jl` / `barotropic_turbulence.ipynb`
-    - Animating two-dimensional data on the fly and in post-processing
-* `free_convection.jl` / `free_convection.ipynb`
-    - Animating three-dimensional data with `Axis3` and `surface`
+* `super_basic_intro.jl` / `super_basic_intro.ipynb` (`Figure`, `Axis`, `heatmap`, and `Slider` for interactivity)
+* `barotropic_turbulence.jl` / `barotropic_turbulence.ipynb` (Animating two-dimensional data on the fly and in post-processing)
+* `free_convection.jl` / `free_convection.ipynb` (Animating three-dimensional data with `Axis3` and `surface`)
 
 ## External resources
 
