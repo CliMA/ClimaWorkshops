@@ -158,16 +158,25 @@ Nt = length(ζ_ts.times)
 
 # and create a figure
 
-fig = Figure(resolution=(1200, 1200))
+fig = Figure(resolution=(1000, 1200))
 
-ax_ζ = Axis(fig[1, 1], xlabel="x", ylabel="y", aspect=1)
-ax_s = Axis(fig[2, 1], xlabel="x", ylabel="y", aspect=1)
-ax_Z = Axis(fig[1, 2], xlabel="Zonally-averaged enstrophy", ylabel="y")
-ax_U = Axis(fig[2, 2], xlabel="Zonally-averaged zontal momentum", ylabel="y")
+lay_ζ   = fig[1, 2:4] = GridLayout() # heatmap
+lay_s   = fig[2, 2:4] = GridLayout() # heatmap
+lay_Z   = fig[1, 5] = GridLayout() # lines
+lay_U   = fig[2, 5] = GridLayout() # lines
+lay_ζcb = fig[2, 1] = GridLayout() # Colorbar
+lay_scb = fig[1, 1] = GridLayout() # Colorbar
+lay_sl  = fig[3, :] = GridLayout() # Slider
+lay_lbl = fig[0, :] = GridLayout() # Label
+
+ax_ζ = Axis(lay_ζ[1, 1], xlabel="x", ylabel="y", aspect=1)
+ax_s = Axis(lay_s[1, 1], xlabel="x", ylabel="y", aspect=1)
+ax_Z = Axis(lay_Z[1, 1], xlabel="x-averaged enstrophy", ylabel="y")
+ax_U = Axis(lay_U[1, 1], xlabel="x-averaged x-momentum", ylabel="y")
 
 # with a `Slider`
 
-slider = Slider(fig[3, :], range=1:Nt, startvalue=1)
+slider = Slider(lay_sl[1, 1], range=1:Nt, startvalue=1)
 n = slider.value
 #n = Observable(1) # This works too if we don't need a slider
 
@@ -207,18 +216,20 @@ lines!(ax_U, Un, ys)
 
 xlims!(ax_U, -0.15, 0.15)
 
-Colorbar(fig[2, 0], hm_s, label="Speed", flipaxis=false)
-Colorbar(fig[1, 0], hm_ζ, label="Vorticity", flipaxis=false)
+cb_ζ = Colorbar(lay_ζcb[1, 1], hm_s, label="Speed", flipaxis=false)
+cb_s = Colorbar(lay_scb[1, 1], hm_ζ, label="Vorticity", flipaxis=false)
 
 title = @lift "Barotropic turbulence at t = " * string(ζ_ts.times[$n])
-lbl = Label(fig[0, :], title)
+lbl = Label(lay_lbl[1, 1], title)
 
 display(fig)
 
 # Even after we play with the data, we can still launch `record` to update
 # `slider.value` and compile frames into an animation,
+
 record(fig, "barotropic_turbulence_offline.mp4", 1:100, framerate=24) do nn
     n[] = nn
     Zmax = maximum(Z_ts[nn])
     xlims!(ax_Z, -Zmax/10, 2Zmax)
 end
+
