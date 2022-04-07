@@ -27,6 +27,17 @@ for example. To run the notebooks through `Julia`, launch `julia --project` and 
 julia> using IJulia; notebook()
 ```
 
+Note: if you'd like to regenerate the notebooks from the scripts, open `Julia` (yet
+again with `julia --project` and type
+
+```julia
+using Literate
+
+Literate.notebook("super_basic_intro.jl", execute=false)
+Literate.notebook("barotropic_turbulence.jl", execute=false)
+Literate.notebook("free_convection.jl", execute=false)
+```
+
 ## External resources
 
 * [`Makie.jl` documentation](https://makie.juliaplots.org/stable/)
