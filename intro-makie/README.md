@@ -30,6 +30,8 @@ julia> using IJulia; notebook()
 Note: if you'd like to regenerate the notebooks from the scripts, open `Julia` (yet
 again with `julia --project` and type
 
+Second note: the `free_convection.jl` tutorial runs a 3D simulation. It will take a few minutes!
+
 ```julia
 using Literate
 
