@@ -14,14 +14,7 @@ This tutorial consists of three scripts / notebooks:
 * `barotropic_turbulence.jl` / `barotropic_turbulence.ipynb` (Animating two-dimensional data on the fly and in post-processing)
 * `free_convection.jl` / `free_convection.ipynb` (Animating three-dimensional data with `Axis3` and `surface`)
 
-## External resources
-
-* [`Makie.jl` documentation](https://makie.juliaplots.org/stable/)
-    - [`Axis`](https://makie.juliaplots.org/stable/examples/layoutables/axis/)
-    - [`Slider`](https://makie.juliaplots.org/stable/examples/layoutables/slider/)
-    - [`Axis3`](https://makie.juliaplots.org/stable/examples/layoutables/axis3/)
-
-Run the tutorials with
+The tutorials can be run as scripts by writing
 
 ```bash
 $ julia --project
@@ -30,7 +23,18 @@ $ julia --project
 and then
 
 ```julia
-julia> include("barotropic_turbulence.jl")
+julia> include("super_basic_intro.jl")
 ```
 
-for example.
+for example. To run the notebooks through `Julia`, launch `julia --project` and then type
+
+```julia
+julia> using IJulia; notebook()
+```
+
+## External resources
+
+* [`Makie.jl` documentation](https://makie.juliaplots.org/stable/)
+    - [`Axis`](https://makie.juliaplots.org/stable/examples/layoutables/axis/)
+    - [`Slider`](https://makie.juliaplots.org/stable/examples/layoutables/slider/)
+    - [`Axis3`](https://makie.juliaplots.org/stable/examples/layoutables/axis3/)
