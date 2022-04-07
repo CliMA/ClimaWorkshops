@@ -3,7 +3,7 @@
 This is an introduction to
 
 * Basic `GLMakie.jl` syntax: `Figure`, `Axis`, layouts, `heatmap`, `contour`, `lines`, `scatter`
-* `Observable`, `Slider`, and record for animating data
+* `Observable`, `Slider`, and `record` for animating data
 * `Axis3` and `surface` for 3D plotting
 
 ## Material
