@@ -20,6 +20,9 @@ This tutorial consists of three scripts / notebooks:
 ## External resources
 
 * [`Makie.jl` documentation](https://makie.juliaplots.org/stable/)
+    - [Axis](https://makie.juliaplots.org/stable/examples/layoutables/axis/)
+    - [Slider](https://makie.juliaplots.org/stable/examples/layoutables/slider/)
+    - [Axis3](https://makie.juliaplots.org/stable/examples/layoutables/axis3/)
 
 Run the tutorials with
 
