@@ -6,6 +6,7 @@
 # If you're using a notebook or you forgot to write `julia --project`,
 # these lines will help...
 
+#=
 using Pkg
 Pkg.activate(".")
 Pkg.instantiate()
@@ -18,17 +19,18 @@ using Printf
 
 # # The setup
 #
-# We generate 3D data of free (dry) convection to have something pretty to plot.
+# We generate 3D data of free convection to have something pretty to plot.
 # The details aren't too important... suffice to say that it's stably stratified,
-# heated from the bottom, and we save 3D cubes kinetic energy to plot later.
+# heated from the bottom, and we save 3D facess kinetic energy to plot later.
 
 grid = RectilinearGrid(size=(64, 64, 64), extent=(256, 256, 128), halo=(3, 3, 3), topology=(Periodic, Periodic, Bounded))
 boundary_conditions = (; b=FieldBoundaryConditions(bottom=FluxBoundaryCondition(1e-7)))
 model = NonhydrostaticModel(; grid, boundary_conditions, advection=WENO5(), tracers=:b, buoyancy=BuoyancyTracer())
-bᵢ(x, y, z) = 1e-6 * z + 1e-8 * rand()
+bᵢ(x, y, z) = 1e-6 * z + 1e-6 * rand()
 set!(model, b=bᵢ)
-simulation = Simulation(model, Δt=20.0, stop_iteration=800)
+simulation = Simulation(model, Δt=10.0, stop_iteration=1000)
 
+u, v, w = model.velocities
 e_op = @at (Center, Center, Center) (u^2 + v^2 + w^2) / 2
 e = compute!(Field(e_op))
 
@@ -41,16 +43,19 @@ progress(sim) = @info string("Iter: ", iteration(sim), ", time: ", prettytime(si
 simulation.callbacks[:progress] = Callback(progress, IterationInterval(10))
 
 run!(simulation)
+=#
 
-# Note that it's usually advisible to save just the _slices_ that are going
-# to be plotted later for 3D animations. Here I save 3D data for simplicity.
+# Note that it's usually advisible to save just the 2D _slices_ that are going
+# to be plotted later for 3D animations. The above saves 3D data for simplicity.
 
 # # Visualization
 #
-# We first define a function that'll help us extract slices on the
-# outside of a cube of data:
+# ## Building coordinates and loading data
+#
+# We define a function that'll help us extract slices on the
+# faces of a faces of data:
 
-function datacube(field)
+function faces(field)
     Nx, Ny, Nz = size(field)
     return (east   = interior(field,  1, :, :),
             west   = interior(field, Nx, :, :),
@@ -60,15 +65,15 @@ function datacube(field)
             top    = interior(field, :, :, Nz))
 end
 
-# We use the `datacube` util to create "coordinate fields":
+# and use `faces` util to create "coordinate fields":
 
 x = set!(CenterField(grid), (x, y, z) -> x)
 y = set!(CenterField(grid), (x, y, z) -> y)
 z = set!(CenterField(grid), (x, y, z) -> z)
 
-xcube = datacube(x)
-ycube = datacube(y)
-zcube = datacube(z)
+xfaces = faces(x)
+yfaces = faces(y)
+zfaces = faces(z)
 
 # This is the important part: we nudge the coordinates a little bit
 # to close gaps between surfaces. Nudging coordinates is often
@@ -76,29 +81,38 @@ zcube = datacube(z)
 # stacked objects.
 
 nudge = 0.005 * grid.Lx
-xcube.west   .+= nudge
-ycube.south  .+= nudge
-zcube.top    .+= nudge
-xcube.east   .-= nudge
-ycube.north  .-= nudge
-zcube.bottom .-= nudge
+xfaces.west   .+= nudge
+yfaces.south  .+= nudge
+zfaces.top    .+= nudge
+xfaces.east   .-= nudge
+yfaces.north  .-= nudge
+zfaces.bottom .-= nudge
 
-# Next, we create a `Figure` with `Axis3` for 3D visualization,
+# Finally, we load the 3D data that we saved:
 
-fig = Figure(resolution=(800, 600))
-ax = Axis3(fig[1, 1], xlabel="x (m)", ylabel="y (m)", zlabel="z (m)")
+et = FieldTimeSeries("convection.jld2", "e")
 
-# and a `Slider` to control the time index,
+# ## Building a 3D animation with `Observable`s
+#
+# We use `Figure`
 
+fig = Figure(resolution=(1200, 800))
+
+# with a `Slider` to control the time index,
+
+Nt = length(et.times)
 slider = Slider(fig[2, 1], range=1:Nt, startvalue=1)
 n = slider.value
 
-# Now we're ready to load data and create `Observable`s,
+# and `Axis3`,
 
-et = FieldTimeSeries("convection.jld2", "e")
-Nt = length(et.times)
+title = @lift "Free convection at t = " * prettytime(et.times[$n])
+ax = Axis3(fig[1, 1], xlabel="x (m)", ylabel="y (m)", zlabel="z (m)"; title)
+
+# Now we're ready to create `Observable` with the handy `slicer.value`,
+#Label(fig[1, 1], title, tellheight=true)
+
 Nx, Ny, Nz = size(grid)
-
 eⁿ_east   = @lift interior(et[$n],  1,  :,  :)
 eⁿ_west   = @lift interior(et[$n], Nx,  :,  :)
 eⁿ_south  = @lift interior(et[$n],  :,  1,  :)
@@ -112,11 +126,8 @@ eⁿ = (east  = eⁿ_east,  west   = eⁿ_west,
 
 # and plot everything
       
-for side in sides
-    x = getproperty(xcube, side)
-    y = getproperty(ycube, side)
-    z = getproperty(zcube, side)
-    pl = surface!(ax, x, y, z, color=eⁿ[side])
+for side in (:east, :west, :north, :south, :top, :bottom)
+    surface!(ax, xfaces[side], yfaces[side], zfaces[side], color=eⁿ[side])
 end
 
 display(fig)
